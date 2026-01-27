@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "name": "Ao3 Chrome Extension",
+  "description": "This extension will help you track your fanfics.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://archiveofourown.org/works/*"],
+      "exclude_matches": ["https://archiveofourown.org/works/search"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "permissions": ["activeTab", "storage"]
+}
