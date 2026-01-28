@@ -5,24 +5,38 @@ export async function getUrl() {
   return tabs[0]?.url;
 }
 
-export async function getFanficId() {
-  let url = await getUrl();
+// For a link like https://archiveofourown.org/works/78470346/chapters/205719781
+// it extracts id after /works/
+export async function getFanficId(fanficUrl?: string) {
+  let url = fanficUrl ?? (await getUrl());
   if (!url) return;
   let urlParts = url.split("/");
   return urlParts[4];
 }
 
-export async function getFanficData() {
-  let id = await getFanficId();
-  if (!id) return;
+export async function getFanficData(url?: string): Promise<fanfic | null> {
+  let id = await getFanficId(url);
+  if (!id) return null;
   let fanficData = await chrome.storage.local.get(id);
-  return fanficData[id];
+  if (!fanficData) return null;
+  return fanficData[id] as fanfic;
 }
 
-export async function saveFanfic(fanfic: any) {
+export async function saveFanfic(fanfic: fanfic) {
   let id = await getFanficId();
   if (!id) return;
   await chrome.storage.local.set({
     [id]: { ...fanfic },
   });
+}
+
+export async function updateFanfic(url: string, updated: any) {
+  let id = await getFanficId(url);
+  if (!id) return null;
+  let fanficData: any = await chrome.storage.local.get(id);
+  if (fanficData) {
+    await chrome.storage.local.set({
+      [id]: { ...fanficData[id], ...updated },
+    });
+  }
 }

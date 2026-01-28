@@ -21,3 +21,15 @@ function getTagsData(tagsClassName: string) {
     return link ? link.textContent : "";
   });
 }
+
+// For link like https://archiveofourown.org/works/54713164/chapters/138662875
+// We need to use parentElement to get fanfic paragraphs.
+// For link like https://archiveofourown.org/works/54713164 we return sibling.
+export function getFanficContent() {
+  let work = document.querySelector("#work");
+  let sibling = work?.nextElementSibling;
+  if (sibling instanceof HTMLParagraphElement) {
+    return work?.parentElement;
+  }
+  return sibling;
+}
