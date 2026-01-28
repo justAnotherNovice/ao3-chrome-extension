@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./tailwind.css";
+import "./index.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -8,9 +9,7 @@ const root = ReactDOM.createRoot(
 
 function render() {
   if (process.env.NODE_ENV === "development") {
-    return function () {
-      return <h1 className="text-blue">Hello world</h1>;
-    };
+    return require("./AppDev").default;
   }
   return require("./App").default;
 }

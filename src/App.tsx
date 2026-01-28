@@ -1,8 +1,8 @@
-import TrackFanfic from "./components/TrackFanfic/TrackFanfic";
+import TrackFanficContainer from "./components/TrackFanfic/TrackFanficContainer";
 import { sendMessage } from "./utils/send-message";
 import { useEffect, useState } from "react";
 import { getFanficData } from "./services/fanfic-tracking";
-import Fanfic from "./components/Fanfic/Fanfic";
+import FanficContainer from "./components/Fanfic/FanficContainer";
 
 function App() {
   const [fanfic, setFanfic] = useState<any | undefined>(undefined);
@@ -28,9 +28,9 @@ function App() {
   return (
     <div className="App">
       {fanfic ? (
-        <Fanfic fanfic={fanfic} />
+        <FanficContainer fanfic={fanfic} />
       ) : (
-        <TrackFanfic setFanficData={setFanficData} />
+        <TrackFanficContainer setFanficData={setFanficData} />
       )}
     </div>
   );
