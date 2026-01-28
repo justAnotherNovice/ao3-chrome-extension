@@ -21,6 +21,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build:tailwind": "tailwindcss build src/index.css -o src/tailwind.css",
+    "prebuild": "npm run build:tailwind",
     "build": "webpack --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js",
     "test": "react-scripts test",
