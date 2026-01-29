@@ -3,14 +3,14 @@ import TrackFanfic from "./components/TrackFanfic/TrackFanfic";
 import { useState } from "react";
 
 const fanfic: any = {
-  title: "BoruSara Week 2024 One Shot Collection",
+  title: "Stalking her possession (caitvi stalker vi x police caitlyn)",
 };
 
 function AppDev() {
   const [isTracking, setIsTracking] = useState(false);
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-[500px] h-[250px] ">
+      <div className="box-content font-serif bg-[#FAFAFA] w-[400px] h-[250px]">
         {isTracking ? (
           <Fanfic fanfic={fanfic} saveMark={() => null} />
         ) : (

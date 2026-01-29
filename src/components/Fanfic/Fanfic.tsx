@@ -12,7 +12,7 @@ function Fanfic({ fanfic, saveMark }: Props) {
       <p>{fanfic?.url}</p>
       <p>{fanfic?.status}</p>
       <p>{fanfic?.title}</p>
-      <Button title="Save Mark" onClick={saveMark} />
+      <Button title="Save Mark" color="red" onClick={saveMark} />
     </div>
   );
 }

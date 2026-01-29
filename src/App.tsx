@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="box-content font-serif bg-[#FAFAFA] h-[260px]">
       {fanfic ? (
         <FanficContainer fanfic={fanfic} />
       ) : (
