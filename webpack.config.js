@@ -28,6 +28,10 @@ module.exports = {
                     "css-loader"
                 ]
             },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader: 'file-loader'
+            }
         ],
     },
     plugins: [
