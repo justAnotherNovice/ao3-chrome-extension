@@ -9,7 +9,7 @@ type Props = PropsWithChildren<{
 
 function TrackFanfic({ title, onReadLater, onStartReading }: Props) {
   return (
-    <div>
+    <div className="pb-10">
       <div className="bg-gradient-to-b from-[#890000] from-40% to-white h-[90px] py-2">
         <h2 className="text-white text-center text-xl">{title}</h2>
       </div>

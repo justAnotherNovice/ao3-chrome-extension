@@ -5,11 +5,11 @@ import PlannedFanfic from "./blocks/PlannedFanfic";
 import { sendMessage } from "./utils/send-message";
 
 const fanfic: any = {
-  title: "Stalking her possession (caitvi stalker vi x police caitlyn)",
-  author: "saladsandbolts",
+  title: "Kink Profiles of Canon Females of the Multiverse",
+  author: "Prismatic_Eye",
   status: "",
   lastRead: "12.12.2025",
-  chapter: "A Visit From The Future",
+  chapter: "Harley Quinn (Clown Princess of Chaos) a very long chapter",
   isTracking: false,
 };
 
@@ -33,8 +33,8 @@ function AppDev() {
   }
 
   return (
-    <div className="flex justify-center  h-screen">
-      <div className="box-content font-serif bg-[#F3F3F3] w-[350px] h-[450px]">
+    <div className="flex justify-center">
+      <div className={`box-content font-serif bg-[#F3F3F3] w-[356px]`}>
         {fanficInfo?.isTracking ? (
           fanficInfo?.status === "Read Later" ? (
             <PlannedFanfic fanfic={fanficInfo} />
