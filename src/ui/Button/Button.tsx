@@ -7,10 +7,10 @@ type Props = PropsWithChildren<{
 }>;
 
 function Button({ title, color, onClick }: Props) {
-  const base = "w-[130px] p-1 text-lg rounded-lg border transition";
+  const base = "w-[48%] p-1 text-base rounded-lg border transition";
   const colors: any = {
     blue: "text-white bg-blue-700 border-transparent hover:bg-blue-900",
-    red: "text-[#890000] border border-[#890000] hover:bg-[#890000] hover:text-white",
+    red: "text-primary border border-primary hover:bg-primary hover:text-white",
   };
   return (
     <button className={`${base} ${colors[color]}`} onClick={onClick}>
