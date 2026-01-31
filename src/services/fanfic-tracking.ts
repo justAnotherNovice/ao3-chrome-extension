@@ -10,8 +10,19 @@ export async function getUrl() {
 export async function getFanficId(fanficUrl?: string) {
   let url = fanficUrl ?? (await getUrl());
   if (!url) return;
-  let urlParts = url.split("/");
-  return urlParts[4];
+  let parts = splitUrlPathname(url);
+  return parts[2];
+}
+
+export function splitUrlPathname(fanficUrl: string) {
+  let url = new URL(fanficUrl);
+  let parts = url.pathname.split("/");
+  return parts;
+}
+
+export function getChapterId(fanficUrl: string) {
+  let parts = splitUrlPathname(fanficUrl);
+  return parts[4];
 }
 
 export async function getFanficData(url?: string): Promise<fanfic | null> {
@@ -25,8 +36,9 @@ export async function getFanficData(url?: string): Promise<fanfic | null> {
 export async function saveFanfic(fanfic: fanfic) {
   let id = await getFanficId();
   if (!id) return;
+  let chapterId = getChapterId(fanfic.url);
   await chrome.storage.local.set({
-    [id]: { ...fanfic },
+    [id]: { ...fanfic, isOneShot: chapterId ? false : true },
   });
 }
 
