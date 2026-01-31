@@ -3,6 +3,8 @@ declare interface fanfic {
   fandoms: any[];
   url: string;
   isOneShot: boolean;
+  lastReadDate: number;
+  startedDate: number;
   bookmark: {
     id: string;
     url: string;

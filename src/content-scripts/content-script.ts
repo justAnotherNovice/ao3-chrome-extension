@@ -1,5 +1,5 @@
 import {
-  getFanficTitle,
+  getFanficHeader,
   getFanficData,
   getFanficContent,
 } from "./get-fanfic-data";
@@ -7,9 +7,7 @@ import { checkBookmark, saveBookmark } from "./fanfic-bookmark";
 
 chrome.runtime.onMessage.addListener((message: any) => {
   if (message.action === "GET_TITLE") {
-    let title = getFanficTitle();
-    console.log("content script: ", title);
-    chrome.runtime.sendMessage({ action: "GET_TITLE", title });
+    chrome.runtime.sendMessage({ action: "GET_TITLE", ...getFanficHeader() });
   }
   if (message.action === "GET_FANFIC") {
     let fanfic = getFanficData(message.options.status);

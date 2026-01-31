@@ -35,11 +35,16 @@ export async function getFanficData(url?: string): Promise<fanfic | null> {
 
 export async function saveFanfic(fanfic: fanfic) {
   let id = await getFanficId();
-  if (!id) return;
-  let chapterId = getChapterId(fanfic.url);
-  await chrome.storage.local.set({
-    [id]: { ...fanfic, isOneShot: chapterId ? false : true },
-  });
+  if (id) {
+    let date = Date.now();
+    await chrome.storage.local.set({
+      [id]: {
+        ...fanfic,
+        lastReadDate: date,
+        startedDate: date,
+      },
+    });
+  }
 }
 
 export async function updateFanfic(url: string, updated: any) {
