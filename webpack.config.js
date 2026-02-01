@@ -30,16 +30,28 @@ module.exports = {
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
-                loader: 'file-loader'
+                loader: 'file-loader',
+                options: {
+                    name: 'assets/images/[name].[ext]'
+                }
             }
         ],
     },
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: "manifest.json", to: "manifest.json" },
-                { from: "popup.html", to: "popup.html" },
-                { from: "./src/assets/styles/popup.css", to: "popup.css" },
+                {
+                    from: "extension/*",
+                    to: "[name][ext]"
+                },
+                {
+                    from: "extension/styles/*",
+                    to: "assets/styles/[name][ext]"
+                },
+                {
+                    from: "extension/images/*",
+                    to: "assets/images/[name][ext]"
+                },
             ],
         }),
     ],
@@ -48,6 +60,6 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, "build"),
-        filename: "[name].js",
+        filename: "js/[name].js",
     },
 };
