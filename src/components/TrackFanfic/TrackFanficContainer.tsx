@@ -10,11 +10,11 @@ type Props = PropsWithChildren<{
 }>;
 
 function TrackFanficContainer({ setFanficData }: Props) {
-  const [title, setTitle] = useState("");
+  const [header, setHeader] = useState({ title: "", author: "" });
 
   useMessage(async (message: any) => {
     if (message.action === "GET_TITLE") {
-      setTitle(message.title);
+      setHeader({ title: message.title, author: message.author });
     }
     if (message.action === "GET_FANFIC") {
       await saveFanfic(message.fanfic);
@@ -24,7 +24,7 @@ function TrackFanficContainer({ setFanficData }: Props) {
 
   return (
     <TrackFanfic
-      title={title}
+      header={header}
       onReadLater={() => sendMessage("GET_FANFIC", { status: "Read Later" })}
       onStartReading={() => sendMessage("GET_FANFIC", { status: "Reading" })}
     />

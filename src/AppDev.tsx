@@ -8,8 +8,8 @@ const fanfic: any = {
   title: "Kink Profiles of Canon Females of the Multiverse",
   author: "Prismatic_Eye",
   status: "",
-  lastRead: "12.12.2025",
-  chapter: "Harley Quinn (Clown Princess of Chaos) a very long chapter",
+  lastReadDate: 1769970891048,
+  chapter: "Harley Quinn (Clown Princess of Chaos)",
   isTracking: false,
 };
 
@@ -46,7 +46,7 @@ function AppDev() {
           )
         ) : (
           <TrackFanfic
-            title={fanficInfo?.title}
+            header={{ title: fanficInfo?.title, author: fanficInfo?.author }}
             onReadLater={onReadLater}
             onStartReading={onStartReading}
           />

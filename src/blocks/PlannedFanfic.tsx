@@ -14,7 +14,7 @@ function PlannedFanfic({ fanfic }: Props) {
       <div className="flex flex-col justify-between mt-2 text-base">
         <Button title="Start reading" color="red" onClick={() => null} />
         <Accordion title="Click a button to get such features">
-          <ul className="">
+          <ul className="pb-2">
             <li className="mt-2 border-b bg-white py-1 px-4 rounded-lg">
               saving reading position and chapter
             </li>
