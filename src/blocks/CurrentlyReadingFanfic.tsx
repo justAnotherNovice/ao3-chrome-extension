@@ -22,8 +22,8 @@ function CurrentlyReadingFanfic({ fanfic, saveMark }: Props) {
         />
       )}
       <div className="mt-3 flex justify-between">
-        <Button title="Save Mark" color="red" onClick={saveMark} />
-        <Button title="Drop" color="red" onClick={saveMark} />
+        <Button title="Save Mark" color="red" width="half" onClick={saveMark} />
+        <Button title="Drop" color="red" width="half" onClick={saveMark} />
       </div>
     </div>
   );

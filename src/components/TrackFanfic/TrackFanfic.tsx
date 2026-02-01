@@ -19,8 +19,18 @@ function TrackFanfic({ header, onReadLater, onStartReading }: Props) {
       <div className="flex flex-col items-center justify-between h-[100px] mt-8">
         <h3 className="text-base font-semibold">by {header.author}</h3>
         <div className="flex justify-between w-[270px]">
-          <Button title="Start reading" color="red" onClick={onStartReading} />
-          <Button title="Read later" color="blue" onClick={onReadLater} />
+          <Button
+            title="Start reading"
+            color="red"
+            width="half"
+            onClick={onStartReading}
+          />
+          <Button
+            title="Read later"
+            color="blue"
+            width="half"
+            onClick={onReadLater}
+          />
         </div>
       </div>
     </div>

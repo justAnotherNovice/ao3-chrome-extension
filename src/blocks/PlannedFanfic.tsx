@@ -12,7 +12,12 @@ function PlannedFanfic({ fanfic }: Props) {
     <div className="p-2 font-serif">
       <FanficHeader fanfic={fanfic} />
       <div className="flex flex-col justify-between mt-2 text-base">
-        <Button title="Start reading" color="red" onClick={() => null} />
+        <Button
+          title="Start reading"
+          color="red"
+          width="full"
+          onClick={() => null}
+        />
         <Accordion title="Click a button to get such features">
           <ul className="pb-2">
             <li className="mt-2 border-b bg-white py-1 px-4 rounded-lg">

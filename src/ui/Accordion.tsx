@@ -11,7 +11,7 @@ function Accordion({ title, children }: Props) {
   const [isOpened, setIsOpened] = useState(false);
   return (
     <div className="mt-3" onClick={() => setIsOpened(!isOpened)}>
-      <div className="flex justify-between p-2 border-primary border-b-2 bg-white rounded-lg">
+      <div className="flex justify-between p-2 border-primary border-b-2 bg-white rounded-lg cursor-pointer">
         <p>{title}</p>
         <img src={angleRight} width={20} height={20} alt="" />
       </div>
