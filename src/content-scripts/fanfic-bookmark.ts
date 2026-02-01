@@ -11,7 +11,10 @@ export async function checkBookmark() {
     let id = fanfic?.bookmark?.id;
     let parts = splitUrlPathname(window.location.href);
     if (id !== parts[parts.length - 1]) return;
-    scrollToBookmark(fanfic.bookmark.paragraphIndex, fanfic.bookmark.scrollY);
+    createBookmarkButton(
+      fanfic.bookmark.paragraphIndex,
+      fanfic.bookmark.scrollY,
+    );
   }
 }
 
@@ -20,7 +23,11 @@ function scrollToBookmark(index: number, scrollY: number) {
   if (fanficText) {
     let paragraph = fanficText.children[index] as HTMLElement;
     paragraph.style.color = "#890000";
-    setTimeout(() => window.scroll(0, scrollY), 1500);
+    window.scroll({
+      top: scrollY,
+      left: 0,
+      behavior: "smooth",
+    });
     paragraph.addEventListener(
       "click",
       function () {
@@ -62,4 +69,30 @@ export async function saveBookmark(clickedElement: HTMLElement) {
     });
     paragraph.style.color = "#890000";
   }
+}
+
+function createBookmarkButton(paragraphIndex: number, scrollY: number) {
+  const host = document.createElement("div");
+  host.id = "ao3-extension-root";
+
+  const container = document.createElement("div");
+  // styles classes are inside extension/styles/content-script.css
+  container.classList.add("ext-bookmark");
+
+  const bookmarkImage = createImage();
+  container.addEventListener("click", () => {
+    scrollToBookmark(paragraphIndex, scrollY);
+    container.classList.add("ext-bookmark-hidden");
+  });
+  container.appendChild(bookmarkImage);
+  host.appendChild(container);
+  document.body.appendChild(host);
+}
+
+function createImage() {
+  let image = document.createElement("img");
+  image.src = chrome.runtime.getURL("assets/images/bookmark.svg");
+  image.width = 35;
+  image.height = 35;
+  return image;
 }
