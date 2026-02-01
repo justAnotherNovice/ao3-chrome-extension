@@ -57,3 +57,8 @@ export async function updateFanfic(url: string, updated: any) {
     });
   }
 }
+
+export async function getLastReadFanfics() {
+  let lastRead = await chrome.storage.local.get("lastRead");
+  return lastRead["lastRead"] as unknown[];
+}

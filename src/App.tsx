@@ -1,36 +1,32 @@
-import TrackFanficContainer from "./components/TrackFanfic/TrackFanficContainer";
-import { sendMessage } from "./utils/send-message";
 import { useEffect, useState } from "react";
-import { getFanficData } from "./services/fanfic-tracking";
-import FanficContainer from "./components/Fanfic/FanficContainer";
+import { checkWebsiteHostname } from "./services/get-url-info";
+import FanficInfo from "./components/Fanfic/FanficInfo";
+import { getLastReadFanfics } from "./services/fanfic-tracking";
 
 function App() {
-  const [fanfic, setFanfic] = useState<any | undefined>(undefined);
-
-  function setFanficData(fanfic: any) {
-    setFanfic(fanfic);
-  }
+  const [isTarget, setIsTarget] = useState(false);
+  const [lastRead, setLastRead] = useState<unknown[]>([]);
 
   useEffect(() => {
-    async function getFanfic() {
-      if (!fanfic) {
-        let fanficData: any = await getFanficData();
-        if (fanficData?.title) {
-          setFanfic(fanficData);
-        } else {
-          sendMessage("GET_TITLE");
-        }
+    async function getTargetWebsite() {
+      let isTarget = await checkWebsiteHostname();
+      if (!isTarget) {
+        let lastRead = await getLastReadFanfics();
+        setLastRead(lastRead);
       }
+      setIsTarget(isTarget);
     }
-    getFanfic();
+    getTargetWebsite();
   }, []);
 
   return (
     <div className="box-content font-serif bg-[#F3F3F3]">
-      {fanfic ? (
-        <FanficContainer fanfic={fanfic} />
+      {isTarget ? (
+        <FanficInfo />
+      ) : !lastRead || lastRead.length === 0 ? (
+        <h1>Welcome component</h1>
       ) : (
-        <TrackFanficContainer setFanficData={setFanficData} />
+        <h1>last read fanfics component</h1>
       )}
     </div>
   );
