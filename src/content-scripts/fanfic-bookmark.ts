@@ -68,12 +68,53 @@ export async function saveBookmark(clickedElement: HTMLElement) {
       },
     });
     paragraph.style.color = "#890000";
+    let tip = document.getElementById("ext-bookmark-tip");
+    tip?.classList.add("ext-bookmark-hidden");
   }
 }
 
+export function showBookmarkTip() {
+  let text = document.createElement("span");
+  text.textContent = "Click on the section to save position";
+  text.classList.add("ext-bookmark-tip");
+  text.id = "ext-bookmark-tip";
+  let root = document.getElementById("ao3-extension-root");
+  if (root) {
+    root.appendChild(text);
+  }
+}
+
+export function showTipOnMouseOver(fanficContentParent: Element) {
+  if (!fanficContentParent) return null;
+
+  let tip = document.getElementById("ext-bookmark-tip") as HTMLElement;
+  tip.style.top = pageYOffset === 0 ? "700px" : "0";
+  fanficContentParent.addEventListener(
+    "mouseover",
+    debounce(function (event: Event) {
+      if (event.target instanceof HTMLElement) {
+        if (event instanceof MouseEvent && tip) {
+          let rect = event.target.getBoundingClientRect();
+          tip.style.top = `${pageYOffset + rect.y}px`;
+        }
+      }
+    }, 500),
+  );
+}
+
+function debounce(func: Function, delay: number) {
+  let timer: any = null;
+  return (event: Event) => {
+    clearTimeout(timer);
+    if (event instanceof MouseEvent) {
+      timer = setTimeout(() => func(event), delay);
+    }
+  };
+}
+
 function createBookmarkButton(paragraphIndex: number, scrollY: number) {
-  const host = document.createElement("div");
-  host.id = "ao3-extension-root";
+  let host = document.getElementById("ao3-extension-root");
+  if (!host) return null;
 
   const container = document.createElement("div");
   // styles classes are inside extension/styles/content-script.css
@@ -86,7 +127,6 @@ function createBookmarkButton(paragraphIndex: number, scrollY: number) {
   });
   container.appendChild(bookmarkImage);
   host.appendChild(container);
-  document.body.appendChild(host);
 }
 
 function createImage() {
