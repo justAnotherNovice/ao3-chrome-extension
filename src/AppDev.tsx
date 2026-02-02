@@ -1,8 +1,12 @@
+/*
+  This file is only for viewing/changing the components style classes on the development server.
+  It was made because of the tailwind css I decided to use for this project.
+*/
 import TrackFanfic from "./components/TrackFanfic/TrackFanfic";
 import { useState } from "react";
 import CurrentlyReadingFanfic from "./blocks/CurrentlyReadingFanfic";
 import PlannedFanfic from "./blocks/PlannedFanfic";
-import { sendMessage } from "./utils/send-message";
+import Welcome from "./components/Welcome";
 
 const fanfic: any = {
   title: "Kink Profiles of Canon Females of the Multiverse",
@@ -13,44 +17,78 @@ const fanfic: any = {
   isTracking: false,
 };
 
+function ComponentSelector({ title, setComponent }: any) {
+  return (
+    <button
+      className="p-2 border-primary border rounded-lg hover:bg-primary hover:text-white"
+      onClick={setComponent}
+    >
+      {title}
+    </button>
+  );
+}
+
+const components = {
+  reading: (fanficInfo: any) => (
+    <CurrentlyReadingFanfic fanfic={fanficInfo} saveMark={() => null} />
+  ),
+  planned: (fanficInfo: any) => <PlannedFanfic fanfic={fanficInfo} />,
+  track: (header: any) => (
+    <TrackFanfic
+      header={header}
+      onReadLater={() => null}
+      onStartReading={() => null}
+    />
+  ),
+  welcome: <Welcome />,
+};
+
 function AppDev() {
-  const [fanficInfo, setFanficInfo] = useState(fanfic);
+  const [component, setComponent] = useState<any>(components["welcome"]);
 
   function onReadLater() {
-    setFanficInfo({
-      ...fanficInfo,
-      isTracking: true,
-      status: "Read Later",
-    });
+    setComponent(
+      components["planned"]({
+        ...fanfic,
+        isTracking: true,
+        status: "Read Later",
+      }),
+    );
   }
 
   function onStartReading() {
-    setFanficInfo({
-      ...fanficInfo,
-      isTracking: true,
-      status: "Reading",
-    });
+    setComponent(
+      components["reading"]({
+        ...fanfic,
+        isTracking: true,
+        status: "Reading",
+      }),
+    );
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex my-5 justify-between w-[25%]">
+        <ComponentSelector
+          title="Welcome"
+          setComponent={() => setComponent(components["welcome"])}
+        />
+        <ComponentSelector
+          title="Tracking"
+          setComponent={() =>
+            setComponent(
+              components["track"]({
+                title: fanfic?.title,
+                author: fanfic?.author,
+              }),
+            )
+          }
+        />
+        <ComponentSelector title="Reading" setComponent={onStartReading} />
+        <ComponentSelector title="Planned" setComponent={onReadLater} />
+      </div>
       <div className={`box-content font-serif bg-[#F3F3F3] w-[356px]`}>
-        {fanficInfo?.isTracking ? (
-          fanficInfo?.status === "Read Later" ? (
-            <PlannedFanfic fanfic={fanficInfo} />
-          ) : (
-            <CurrentlyReadingFanfic
-              fanfic={fanficInfo}
-              saveMark={() => sendMessage("SAVE_BOOKMARK")}
-            />
-          )
-        ) : (
-          <TrackFanfic
-            header={{ title: fanficInfo?.title, author: fanficInfo?.author }}
-            onReadLater={onReadLater}
-            onStartReading={onStartReading}
-          />
-        )}
+        {component}
       </div>
     </div>
   );
