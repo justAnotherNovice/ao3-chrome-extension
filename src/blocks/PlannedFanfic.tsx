@@ -2,6 +2,9 @@ import { PropsWithChildren } from "react";
 import FanficHeader from "../components/Fanfic/FanficHeader";
 import Button from "../ui/Button/Button";
 import Accordion from "../ui/Accordion";
+import bookmark from "../assets/images/bookmark-feature.svg";
+import viewInfo from "../assets/images/eye.svg";
+import lastRead from "../assets/images/time-past.svg";
 
 type Props = PropsWithChildren<{
   fanfic: any;
@@ -20,14 +23,19 @@ function PlannedFanfic({ fanfic }: Props) {
         />
         <Accordion title="Click a button to get such features">
           <ul className="pb-2">
-            <li className="mt-2 border-b bg-white py-1 px-4 rounded-lg">
-              saving reading position and chapter
+            <li className="flex mt-2 border-b bg-white py-[5px] rounded-lg">
+              <img className="ml-2" src={bookmark} width={20} height={20} />
+              <span className="ml-2">saving reading position and chapter</span>
             </li>
-            <li className="mt-2 border-b bg-white py-1 px-4 rounded-lg">
-              look for kudos or downloaded info
+            <li className="flex mt-2 border-b bg-white py-[5px] rounded-lg">
+              <img className="ml-2" src={viewInfo} width={20} height={20} />
+              <span className="ml-2">look for kudos or downloaded info</span>
             </li>
-            <li className="mt-2 border-b bg-white py-1 px-4 rounded-lg">
-              return to last read fanfic from other sites
+            <li className="flex mt-2 border-b bg-white py-[5px] rounded-lg">
+              <img className="ml-2" src={lastRead} width={20} height={20} />
+              <span className="ml-2">
+                return to last read fanfic from other sites
+              </span>
             </li>
           </ul>
         </Accordion>
