@@ -1,8 +1,11 @@
 declare interface fanfic {
+  id: string;
   title: string;
+  status: string;
   fandoms: any[];
   url: string;
   isOneShot: boolean;
+  chapter: string;
   lastReadDate: number;
   startedDate: number;
   bookmark: {

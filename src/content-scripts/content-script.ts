@@ -6,12 +6,12 @@ import {
 import { checkBookmark, saveBookmark } from "./fanfic-bookmark";
 import { showBookmarkTip, showTipOnMouseOver } from "./fanfic-bookmark";
 
-chrome.runtime.onMessage.addListener((message: any) => {
+chrome.runtime.onMessage.addListener(async (message: any) => {
   if (message.action === "GET_TITLE") {
     chrome.runtime.sendMessage({ action: "GET_TITLE", ...getFanficHeader() });
   }
   if (message.action === "GET_FANFIC") {
-    let fanfic = getFanficData(message.options.status);
+    let fanfic = await getFanficData(message.options.status);
     chrome.runtime.sendMessage({ action: "GET_FANFIC", fanfic });
   }
   if (message.action === "SAVE_BOOKMARK") {

@@ -1,4 +1,4 @@
-import { getChapterId } from "../services/fanfic-tracking";
+import { getChapterId, getFanficId } from "../services/fanfic-tracking";
 
 export function getFanficHeader() {
   let titleElement = document.querySelector("h2");
@@ -14,13 +14,18 @@ export function getChapterTitle() {
   return title instanceof HTMLElement ? title.innerText.trim() : "";
 }
 
-export function getFanficData(readingStatus: string) {
+export async function getFanficData(readingStatus: string) {
+  let fanficId = await getFanficId(window.location.href);
   let id = getChapterId(window.location.href);
+  let date = Date.now();
   let fanfic: any = {
     ...getFanficHeader(),
     fandoms: getTagsData("fandom"),
     url: window.location.href,
     status: readingStatus,
+    id: fanficId,
+    lastReadDate: date,
+    startedDate: date,
     isOneShot: id ? false : true,
   };
   if (fanfic.isOneShot) {

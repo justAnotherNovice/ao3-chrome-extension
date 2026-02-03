@@ -34,17 +34,10 @@ export async function getFanficData(url?: string): Promise<fanfic | null> {
 }
 
 export async function saveFanfic(fanfic: fanfic) {
-  let id = await getFanficId();
-  if (id) {
-    let date = Date.now();
-    await chrome.storage.local.set({
-      [id]: {
-        ...fanfic,
-        lastReadDate: date,
-        startedDate: date,
-      },
-    });
-  }
+  let id = fanfic.id;
+  await chrome.storage.local.set({
+    [id]: fanfic,
+  });
 }
 
 export async function updateFanfic(url: string, updated: any) {
@@ -60,5 +53,20 @@ export async function updateFanfic(url: string, updated: any) {
 
 export async function getLastReadFanfics() {
   let lastRead = await chrome.storage.local.get("lastRead");
-  return lastRead["lastRead"] as unknown[];
+  return lastRead["lastRead"] as string[];
+}
+
+export async function addFanficToLastRead(fanfic: fanfic) {
+  let lastRead = (await getLastReadFanfics()) ?? [];
+  if (isFanficInLastRead(lastRead, fanfic)) return null;
+
+  if (lastRead.length === 5) {
+    lastRead.shift();
+  }
+  lastRead.push(fanfic.id);
+  await chrome.storage.local.set({ lastRead });
+}
+
+function isFanficInLastRead(lastRead: any[], fanfic: fanfic) {
+  return lastRead.some((recentFanficId) => recentFanficId === fanfic.id);
 }
