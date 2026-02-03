@@ -52,12 +52,24 @@ export async function updateFanfic(url: string, updated: any) {
 }
 
 export async function getLastReadFanfics() {
+  let lastReadIds = await getLastReadFanficsId();
+  let fanfics = await chrome.storage.local.get(lastReadIds);
+  let fanficsInOrder = [];
+  // to preserve the order of last read fanfics. Object.values(fanfics) returns in ascending order.
+  for (let i = lastReadIds.length - 1; i !== -1; i--) {
+    fanficsInOrder.push(fanfics[lastReadIds[i]]);
+  }
+  return fanficsInOrder as fanfic[];
+}
+
+export async function getLastReadFanficsId() {
   let lastRead = await chrome.storage.local.get("lastRead");
-  return lastRead["lastRead"] as string[];
+  let lastReadId = lastRead["lastRead"] ?? [];
+  return lastReadId as string[];
 }
 
 export async function addFanficToLastRead(fanfic: fanfic) {
-  let lastRead = (await getLastReadFanfics()) ?? [];
+  let lastRead = await getLastReadFanficsId();
   if (isFanficInLastRead(lastRead, fanfic)) return null;
 
   if (lastRead.length === 5) {

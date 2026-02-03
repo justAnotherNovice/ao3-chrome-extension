@@ -13,9 +13,7 @@ function FanficHeader({ fanfic }: Props) {
   console.log(fanfic);
   return (
     <>
-      <h2 className="mt-2 text-lg text-center border-b-2 border-primary pb-2">
-        {fanfic?.title}
-      </h2>
+      <h2 className="text-lg text-center">{fanfic?.title}</h2>
       <div className="flex mt-2 justify-between">
         <FanficDetail
           img={books}
