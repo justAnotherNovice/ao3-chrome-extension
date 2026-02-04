@@ -6,6 +6,8 @@ declare interface fanfic {
   url: string;
   isOneShot: boolean;
   chapter: string;
+  chapterNumber: number;
+  isNextChapter: boolean;
   lastReadDate: number;
   startedDate: number;
   bookmark: {

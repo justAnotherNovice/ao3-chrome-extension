@@ -1,24 +1,35 @@
 import {
   getFanficHeader,
-  getFanficData,
+  collectFanficData,
   getFanficContent,
+  updateChapter,
 } from "./get-fanfic-data";
 import { checkBookmark, saveBookmark } from "./fanfic-bookmark";
 import { showBookmarkTip, showTipOnMouseOver } from "./fanfic-bookmark";
+import { setUserActionsListeners } from "./user-actions";
 
 chrome.runtime.onMessage.addListener(async (message: any) => {
   if (message.action === "GET_TITLE") {
     chrome.runtime.sendMessage({ action: "GET_TITLE", ...getFanficHeader() });
   }
   if (message.action === "GET_FANFIC") {
-    let fanfic = await getFanficData(message.options.status);
+    let fanfic = await collectFanficData(message.options.status);
     chrome.runtime.sendMessage({ action: "GET_FANFIC", fanfic });
+    setUserActionsListeners();
   }
   if (message.action === "SAVE_BOOKMARK") {
     let fanficParagraphs = getFanficContent();
     showBookmarkTip();
     fanficParagraphs?.addEventListener("click", onSaveBookmark);
     showTipOnMouseOver(fanficParagraphs as Element);
+  }
+  if (message.action === "UPDATE_CHAPTER") {
+    if (document.readyState === "complete") {
+      await updateChapter(message.isNextChapter);
+      // needed to reset listeners because when the <Next chapter> is clicked, page does not reload.
+      // but button positions have changed.
+      setUserActionsListeners();
+    }
   }
 });
 
@@ -37,4 +48,5 @@ async function onSaveBookmark(event: Event) {
 }
 
 createExtensionDiv();
+setUserActionsListeners();
 checkBookmark();

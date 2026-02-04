@@ -1,4 +1,9 @@
-import { getChapterId, getFanficId } from "../services/fanfic-tracking";
+import {
+  getChapterId,
+  getFanficId,
+  updateFanfic,
+  getFanficData,
+} from "../services/fanfic-tracking";
 
 export function getFanficHeader() {
   let titleElement = document.querySelector("h2");
@@ -9,12 +14,15 @@ export function getFanficHeader() {
   };
 }
 
-export function getChapterTitle() {
+export function getChapterInfo() {
   let title = document.querySelector("h3.title");
-  return title instanceof HTMLElement ? title.innerText.trim() : "";
+  let text = title instanceof HTMLElement ? title.innerText.trim() : "";
+  let parts = text.split(" ", 2);
+  let chapterNumber = parts[1];
+  return { chapterNumber: parseInt(chapterNumber), chapter: text };
 }
 
-export async function getFanficData(readingStatus: string) {
+export async function collectFanficData(readingStatus: string) {
   let fanficId = await getFanficId(window.location.href);
   let id = getChapterId(window.location.href);
   let date = Date.now();
@@ -23,18 +31,41 @@ export async function getFanficData(readingStatus: string) {
     fandoms: getTagsData("fandom"),
     url: window.location.href,
     status: readingStatus,
+    chapterNumber: 1,
     id: fanficId,
     lastReadDate: date,
     startedDate: date,
     isOneShot: id ? false : true,
   };
-  if (fanfic.isOneShot) {
-    return fanfic;
+  return addChapter(fanfic);
+}
+
+function addChapter(fanfic: any) {
+  if (!fanfic.isOneShot) {
+    return {
+      ...fanfic,
+      ...getChapterInfo(),
+    };
   }
-  return {
-    ...fanfic,
-    chapter: getChapterTitle(),
-  };
+  return fanfic;
+}
+
+export async function updateChapter(isNextChapter: boolean) {
+  let url = window.location.href;
+  let fanfic = await getFanficData(url);
+  if (!fanfic) return null;
+
+  let { chapterNumber, chapter } = getChapterInfo();
+  if (fanfic.chapterNumber + 1 !== chapterNumber) return null;
+
+  await updateFanfic(url, {
+    bookmark: {
+      ...fanfic.bookmark,
+      url: window.location.href,
+    },
+    chapter,
+    chapterNumber,
+  });
 }
 
 function getTagsData(tagsClassName: string) {
