@@ -39,11 +39,11 @@ function createExtensionDiv() {
   document.body.appendChild(host);
 }
 
-async function onSaveBookmark(event: Event) {
+async function onSaveBookmark(this: HTMLElement, event: Event) {
+  if (event.target instanceof HTMLDivElement) return null;
   if (event.target instanceof HTMLElement) {
-    let fanficParagraphs = getFanficContent();
     await saveBookmark(event.target);
-    fanficParagraphs?.removeEventListener("click", onSaveBookmark);
+    this?.removeEventListener("click", onSaveBookmark);
   }
 }
 

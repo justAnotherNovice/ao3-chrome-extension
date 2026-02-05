@@ -38,29 +38,31 @@ function scrollToBookmark(index: number, scrollY: number) {
   }
 }
 
-// It is possible to click on something besides <p>.
+// It is possible to click on deep nested elements inside of <p>.
 // This function ensures to get an actual paragraph
-function getParagraph(clickedElement: HTMLElement) {
+function getSection(clickedElement: HTMLElement): HTMLParagraphElement | null {
   if (clickedElement instanceof HTMLParagraphElement) {
     return clickedElement;
   }
-  return clickedElement.parentElement;
+  let parent = clickedElement?.parentElement;
+  return parent ? getSection(parent) : null;
 }
 
 // Saves bookmark data to open page on the specified scrollbar Y position and highlight selected paragraph
 export async function saveBookmark(clickedElement: HTMLElement) {
   let fanficSections = getFanficContent()?.children;
-  if (!fanficSections) return null;
+  let fanfic = await getFanficData(window.location.href);
+  if (!fanfic || !fanficSections) return null;
 
   let fanficUrl = window.location.href;
   let urlParts = splitUrlPathname(fanficUrl);
-  let paragraph = getParagraph(clickedElement);
+  let paragraph = getSection(clickedElement);
   if (paragraph) {
     let index = [...fanficSections].indexOf(paragraph);
     let scrollY = window.scrollY;
     await updateFanfic(fanficUrl, {
       bookmark: {
-        url: fanficUrl,
+        ...fanfic.bookmark,
         paragraphIndex: index,
         scrollY,
         // uses fanficId or chapterId (if it's a series) from a url, as a value for a bookmark
@@ -88,7 +90,7 @@ export function showTipOnMouseOver(fanficContentParent: Element) {
   if (!fanficContentParent) return null;
 
   let tip = document.getElementById("ext-bookmark-tip") as HTMLElement;
-  tip.style.top = pageYOffset === 0 ? "700px" : "0";
+  tip.style.top = pageYOffset === 0 ? "700px" : `${pageYOffset + 50}px`;
   fanficContentParent.addEventListener(
     "mouseover",
     debounce(function (event: Event) {
