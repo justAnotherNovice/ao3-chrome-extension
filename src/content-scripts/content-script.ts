@@ -23,13 +23,17 @@ chrome.runtime.onMessage.addListener(async (message: any) => {
     fanficParagraphs?.addEventListener("click", onSaveBookmark);
     showTipOnMouseOver(fanficParagraphs as Element);
   }
-  if (message.action === "UPDATE_CHAPTER") {
-    if (document.readyState === "complete") {
-      await updateChapter(message.isNextChapter);
-      // needed to reset listeners because when the <Next chapter> is clicked, page does not reload.
-      // but button positions have changed.
+});
+
+// reacts only to the storage changes caused by a <Next chapter> click on a fanfic page to update chapter title
+chrome.storage.onChanged.addListener((changes, area) => {
+  let isNextChapter = changes?.update?.newValue;
+  if (isNextChapter) {
+    setTimeout(async () => {
+      await updateChapter(true);
       setUserActionsListeners();
-    }
+      await chrome.storage.local.remove("update");
+    }, 2000);
   }
 });
 
