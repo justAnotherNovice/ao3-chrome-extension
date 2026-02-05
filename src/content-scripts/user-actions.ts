@@ -1,6 +1,6 @@
 import { updateFanfic } from "../services/fanfic-tracking";
 import { getChapterInfo } from "./get-fanfic-data";
-import { updateChapter } from "./get-fanfic-data";
+import { getFanficId } from "../services/fanfic-tracking";
 
 export function setUserActionsListeners() {
   let feedback = document.querySelector("#feedback");
@@ -10,8 +10,9 @@ export function setUserActionsListeners() {
   if (!actions || !downloadOptions) return null;
 
   async function listenNextChapterButton() {
-    chrome.storage.local.set({ update: true });
-    //chrome.runtime.sendMessage({ action: "UPDATE_CHAPTER" });
+    chrome.storage.local.set({
+      update: await getFanficId(window.location.href),
+    });
   }
 
   async function listenKudosButton() {

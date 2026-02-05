@@ -27,10 +27,10 @@ chrome.runtime.onMessage.addListener(async (message: any) => {
 
 // reacts only to the storage changes caused by a <Next chapter> click on a fanfic page to update chapter title
 chrome.storage.onChanged.addListener((changes, area) => {
-  let isNextChapter = changes?.update?.newValue;
-  if (isNextChapter) {
+  let pendingFanficId = changes?.update?.newValue;
+  if (pendingFanficId) {
     setTimeout(async () => {
-      await updateChapter();
+      await updateChapter(pendingFanficId as string);
       setUserActionsListeners();
       await chrome.storage.local.remove("update");
     }, 2000);

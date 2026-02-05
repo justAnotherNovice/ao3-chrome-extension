@@ -51,10 +51,10 @@ function addChapter(fanfic: any) {
   return fanfic;
 }
 
-export async function updateChapter() {
+export async function updateChapter(pendingFanficId: string) {
   let url = window.location.href;
   let fanfic = await getFanficData(url);
-  if (!fanfic) return null;
+  if (!fanfic || fanfic.id !== pendingFanficId) return null;
 
   let { chapterNumber, chapter } = getChapterInfo();
   if (fanfic.chapterNumber + 1 !== chapterNumber) return null;
