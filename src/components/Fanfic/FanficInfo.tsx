@@ -18,18 +18,15 @@ function FanficInfo({}: Props) {
 
   useEffect(() => {
     async function getFanfic() {
-      let fanficData: any = fanfic.id ? fanfic : await getFanficData();
-      if (fanficData?.status === "Reading") {
-        await addFanficToLastRead(fanficData);
-      }
-      if (fanficData?.status && !fanfic?.status) {
+      let fanficData: any = await getFanficData();
+      if (fanficData?.status) {
         setFanfic(fanficData);
         return null;
       }
       sendMessage("GET_TITLE");
     }
     getFanfic();
-  }, [fanfic.status]);
+  }, []);
 
   return (
     <div className="box-content font-serif bg-[#F3F3F3]">

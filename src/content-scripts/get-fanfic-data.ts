@@ -3,6 +3,7 @@ import {
   getFanficId,
   updateFanfic,
   getFanficData,
+  addFanficToLastRead,
 } from "../services/fanfic-tracking";
 
 export function getFanficHeader() {
@@ -50,7 +51,7 @@ function addChapter(fanfic: any) {
   return fanfic;
 }
 
-export async function updateChapter(isNextChapter: boolean) {
+export async function updateChapter() {
   let url = window.location.href;
   let fanfic = await getFanficData(url);
   if (!fanfic) return null;
@@ -65,7 +66,9 @@ export async function updateChapter(isNextChapter: boolean) {
     },
     chapter,
     chapterNumber,
+    lastReadDate: Date.now(),
   });
+  await addFanficToLastRead(fanfic.id);
 }
 
 function getTagsData(tagsClassName: string) {

@@ -68,17 +68,17 @@ export async function getLastReadFanficsId() {
   return lastReadId as string[];
 }
 
-export async function addFanficToLastRead(fanfic: fanfic) {
+export async function addFanficToLastRead(fanficId: string) {
   let lastRead = await getLastReadFanficsId();
-  if (isFanficInLastRead(lastRead, fanfic)) return null;
+  if (isFanficInLastRead(lastRead, fanficId)) return null;
 
   if (lastRead.length === 5) {
     lastRead.shift();
   }
-  lastRead.push(fanfic.id);
+  lastRead.push(fanficId);
   await chrome.storage.local.set({ lastRead });
 }
 
-function isFanficInLastRead(lastRead: any[], fanfic: fanfic) {
-  return lastRead.some((recentFanficId) => recentFanficId === fanfic.id);
+function isFanficInLastRead(lastRead: any[], fanficId: string) {
+  return lastRead.some((recentFanficId) => recentFanficId === fanficId);
 }

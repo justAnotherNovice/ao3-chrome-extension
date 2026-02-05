@@ -30,7 +30,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
   let isNextChapter = changes?.update?.newValue;
   if (isNextChapter) {
     setTimeout(async () => {
-      await updateChapter(true);
+      await updateChapter();
       setUserActionsListeners();
       await chrome.storage.local.remove("update");
     }, 2000);
