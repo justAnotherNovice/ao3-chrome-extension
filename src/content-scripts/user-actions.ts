@@ -28,18 +28,21 @@ export function setUserActionsListeners() {
     (actions[index1] as HTMLElement).onclick = listenNextChapterButton;
     (actions[index2] as HTMLElement).onclick = listenKudosButton;
   }
-
-  if (chapterNumber) {
-    // starting from chapter #2, <Next chapter> and <Kudos> buttons have different positions in the list
-    if (chapterNumber > 1) {
-      setListeners([2, 3]);
-      (actions[1] as HTMLElement).onclick = null;
-    } else {
-      setListeners([1, 2]);
-      (actions[3] as HTMLElement).onclick = null;
-    }
-  } else {
-    (actions[1] as HTMLElement).onclick = listenKudosButton;
-  }
   (downloadOptions as HTMLElement).onclick = listenDownloadedButton;
+
+  if (!chapterNumber) {
+    (actions[1] as HTMLElement).onclick = listenKudosButton;
+    return null;
+  }
+  // starting from chapter #2, <Next chapter> and <Kudos> buttons have different positions in the list
+  if (chapterNumber > 1) {
+    setListeners([2, 3]);
+    (actions[1] as HTMLElement).onclick = null;
+    return null;
+  }
+  setListeners([1, 2]);
+  // In case for the fanfic that does not have any comments. Without condition it raises error
+  if (actions.length > 3) {
+    (actions[3] as HTMLElement).onclick = null;
+  }
 }
