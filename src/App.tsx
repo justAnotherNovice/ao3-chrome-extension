@@ -4,6 +4,7 @@ import FanficInfo from "./components/Fanfic/FanficInfo";
 import { getLastReadFanfics } from "./services/fanfic-tracking";
 import Welcome from "./components/Welcome";
 import LastReadFanfic from "./components/LastReadFanfic";
+import Button from "./ui/Button/Button";
 
 function App() {
   const [isTarget, setIsTarget] = useState(false);
@@ -21,6 +22,11 @@ function App() {
     getTargetWebsite();
   }, []);
 
+  function openHistory() {
+    let url = chrome.runtime.getURL("history.html");
+    window.open(url, "_blank");
+  }
+
   return (
     <div className="box-content font-serif bg-[#F3F3F3]">
       {isTarget ? (
@@ -32,6 +38,12 @@ function App() {
           {lastRead.map((fanfic) => (
             <LastReadFanfic fanfic={fanfic} key={fanfic.id} />
           ))}
+          <Button
+            title="Open history"
+            width="full"
+            color="blue"
+            onClick={openHistory}
+          />
         </div>
       )}
     </div>

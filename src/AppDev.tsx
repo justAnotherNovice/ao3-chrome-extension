@@ -7,6 +7,8 @@ import { useState } from "react";
 import CurrentlyReadingFanfic from "./blocks/CurrentlyReadingFanfic";
 import PlannedFanfic from "./blocks/PlannedFanfic";
 import Welcome from "./components/Welcome";
+import History from "./components/History";
+import Accordion from "./ui/Accordion";
 
 const fanfic: any = {
   title: "Kink Profiles of Canon Females of the Multiverse",
@@ -41,55 +43,83 @@ const components = {
     />
   ),
   welcome: <Welcome />,
+  history: <History />,
 };
 
 function AppDev() {
-  const [component, setComponent] = useState<any>(components["welcome"]);
+  const [component, setComponent] = useState<any>({
+    title: "",
+    selected: components["welcome"],
+  });
+  let [toggleControls, setToggleControls] = useState(false);
 
   function onReadLater() {
-    setComponent(
-      components["planned"]({
+    setComponent({
+      title: "Read later",
+      selected: components["planned"]({
         ...fanfic,
         isTracking: true,
         status: "Read Later",
       }),
-    );
+    });
   }
 
   function onStartReading() {
-    setComponent(
-      components["reading"]({
+    setComponent({
+      title: "Reading",
+      selected: components["reading"]({
         ...fanfic,
         isTracking: true,
         status: "Reading",
       }),
-    );
+    });
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="flex my-5 justify-between w-[25%]">
+    <div className="flex flex-col">
+      <div
+        className="absolute right-[48%] z-99 w-12 h-2 bottom-2 border-4 border-black rounded-lg cursor-pointer"
+        onClick={() => setToggleControls(!toggleControls)}
+      ></div>
+      <div
+        className={`flex justify-between w-[30%] mx-auto relative ${toggleControls ? "h-0 overflow-hidden" : "my-3"}`}
+      >
         <ComponentSelector
           title="Welcome"
-          setComponent={() => setComponent(components["welcome"])}
+          setComponent={() =>
+            setComponent({ title: "Welcome", selected: components["welcome"] })
+          }
         />
         <ComponentSelector
           title="Tracking"
           setComponent={() =>
-            setComponent(
-              components["track"]({
+            setComponent({
+              title: "Tracking",
+              selected: components["track"]({
                 title: fanfic?.title,
                 author: fanfic?.author,
               }),
-            )
+            })
           }
         />
         <ComponentSelector title="Reading" setComponent={onStartReading} />
         <ComponentSelector title="Planned" setComponent={onReadLater} />
+        <ComponentSelector
+          title="History"
+          setComponent={() =>
+            setComponent({ title: "History", selected: components["history"] })
+          }
+        />
       </div>
-      <div className={`box-content font-serif bg-[#F3F3F3] w-[356px]`}>
-        {component}
-      </div>
+      {component.title === "History" ? (
+        component.selected
+      ) : (
+        <div
+          className={`box-content font-serif bg-[#F3F3F3] w-[356px] mx-auto`}
+        >
+          {component.selected}
+        </div>
+      )}
     </div>
   );
 }
