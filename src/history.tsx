@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import History from "./components/History";
+import History from "./components/History/History";
 import "./tailwind.css";
 import "./index.css";
 

@@ -7,8 +7,7 @@ import { useState } from "react";
 import CurrentlyReadingFanfic from "./blocks/CurrentlyReadingFanfic";
 import PlannedFanfic from "./blocks/PlannedFanfic";
 import Welcome from "./components/Welcome";
-import History from "./components/History";
-import Accordion from "./ui/Accordion";
+import History from "./components/History/History";
 
 const fanfic: any = {
   title: "Kink Profiles of Canon Females of the Multiverse",
