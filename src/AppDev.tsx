@@ -9,14 +9,32 @@ import PlannedFanfic from "./blocks/PlannedFanfic";
 import Welcome from "./components/Welcome";
 import History from "./components/History/History";
 
-const fanfic: any = {
-  title: "Kink Profiles of Canon Females of the Multiverse",
-  author: "Prismatic_Eye",
-  status: "",
-  lastReadDate: 1769970891048,
-  chapter: "Harley Quinn (Clown Princess of Chaos)",
-  isTracking: false,
-};
+const fanfics = [
+  {
+    title: "Kink Profiles of Canon Females of the Multiverse",
+    author: "Prismatic_Eye",
+    status: "Reading",
+    lastReadDate: 1769970891048,
+    startedDate: 1769970891048,
+    chapter: "Harley Quinn (Clown Princess of Chaos)",
+    isTracking: false,
+    isKudosed: true,
+    isDownloaded: false,
+    isOneShot: false,
+  },
+  {
+    title: "A Ballad of Frost and Flame",
+    author: "SilentC",
+    status: "Reading",
+    lastReadDate: 1770322857602,
+    startedDate: 1770320204899,
+    chapter: "Chapter 5",
+    isTracking: false,
+    isKudosed: true,
+    isDownloaded: true,
+    isOneShot: false,
+  },
+];
 
 function ComponentSelector({ title, setComponent }: any) {
   return (
@@ -42,10 +60,11 @@ const components = {
     />
   ),
   welcome: <Welcome />,
-  history: <History />,
+  history: <History fanfics={fanfics} />,
 };
 
 function AppDev() {
+  const fanfic = fanfics[0];
   const [component, setComponent] = useState<any>({
     title: "",
     selected: components["welcome"],

@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import History from "./components/History/History";
 import "./tailwind.css";
 import "./index.css";
+import HistoryContainer from "./components/History/HistoryContainer";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -10,6 +10,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <History />
+    <HistoryContainer />
   </React.StrictMode>,
 );
